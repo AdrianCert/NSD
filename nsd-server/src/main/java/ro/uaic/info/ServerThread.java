@@ -89,7 +89,7 @@ public class ServerThread implements Runnable {
         DispatcherController dispatcherController;
         try {
             for( Class<? extends DispatcherController> c : dispatcherControllers) {
-                if(path.matches(String.valueOf(c.getField("mapRegex")))) {
+                if(path.matches((String) c.getField("mapRegex").get(null))) {
                     constructor = c.getConstructor();
                     constructor.setAccessible(true);
                     dispatcherController = constructor.newInstance();
@@ -124,10 +124,10 @@ public class ServerThread implements Runnable {
                 .body(new StringBuilder().append('{')
                         // add timestamp
                         .append(quo).append("timestamp").append(quo).append(':')
-                        .append(quo).append(new Date().toString()).append(quo)
+                        .append(quo).append(new Date().toString()).append(quo).append(',')
                         // add path
                         .append(quo).append("path").append(quo).append(':')
-                        .append(quo).append(httpRequest.getUri()).append(quo)
+                        .append(quo).append(httpRequest.getUri()).append(quo).append(',')
                         // add status
                         .append(quo).append("status").append(quo).append(':')
                         .append(quo).append("404").append(quo)
@@ -149,10 +149,10 @@ public class ServerThread implements Runnable {
                 .body(new StringBuilder().append('{')
                         // add timestamp
                         .append(quo).append("timestamp").append(quo).append(':')
-                        .append(quo).append(new Date().toString()).append(quo)
+                        .append(quo).append(new Date().toString()).append(quo).append(',')
                         // add message
                         .append(quo).append("message").append(quo).append(':')
-                        .append(quo).append(message).append(quo)
+                        .append(quo).append(message).append(quo).append(',')
                         // add path
                         .append(quo).append("path").append(quo).append(':')
                         .append(quo).append(httpRequest.getUri()).append(quo)
