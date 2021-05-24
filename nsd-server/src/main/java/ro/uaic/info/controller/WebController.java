@@ -1,19 +1,19 @@
-package ro.uaic.info.Controller;
+package ro.uaic.info.controller;
 
 import ro.uaic.info.HttpMessage.HttpMessageNotFoundException;
 import ro.uaic.info.HttpMessage.HttpMessageRequest;
 import ro.uaic.info.HttpMessage.HttpMessageResponse;
 
 /**
- * Controller witch handle the required service discovery, registration and monitoring
+ * Controller witch handle the web interface
  *
  * @author Adrian-Valentin Panaintecu
  */
-public class ServiceController implements DispatcherController {
+public class WebController implements DispatcherController {
     /**
      * The request mapping for controller
      */
-    public static String mapRegex = "/service(.*)";
+    public static String mapRegex = "/(.*)";
 
     /**
      * Return a http response from inhered methods. Each method should resolve one path - method pair
@@ -27,5 +27,4 @@ public class ServiceController implements DispatcherController {
 
         throw new HttpMessageNotFoundException();
     }
-
 }

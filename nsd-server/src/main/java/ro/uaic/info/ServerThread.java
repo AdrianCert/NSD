@@ -1,10 +1,10 @@
 package ro.uaic.info;
 
 
-import ro.uaic.info.Controller.DispatcherController;
-import ro.uaic.info.Controller.InstanceController;
-import ro.uaic.info.Controller.ServiceController;
-import ro.uaic.info.Controller.WebController;
+import ro.uaic.info.controller.DispatcherController;
+import ro.uaic.info.controller.InstanceController;
+import ro.uaic.info.controller.ServiceController;
+import ro.uaic.info.controller.WebController;
 import ro.uaic.info.HttpMessage.*;
 
 import java.io.BufferedReader;
@@ -62,6 +62,8 @@ public class ServerThread implements Runnable {
             httpRequest = HttpMessageRequest.of(bufferedReader);
             // build the http response
             HttpMessageResponse httpResponse = dispatch(httpRequest);
+            httpResponse.addHeader(HttpMessage.HEADER.CONNECTION, httpRequest.getHeader(HttpMessage.HEADER.CONNECTION));
+            httpResponse.addHeader(HttpMessage.HEADER.HOST, httpRequest.getHeader(HttpMessage.HEADER.HOST));
             // send the http response
             httpResponse.send(socket);
 

@@ -65,7 +65,7 @@ public class HttpMessageResponse {
      */
     public void send(Socket socket) {
         try(PrintWriter controlBuffer = new PrintWriter(socket.getOutputStream());
-            BufferedOutputStream dataBuffer = new BufferedOutputStream(socket.getOutputStream());
+            BufferedOutputStream dataBuffer = new BufferedOutputStream(socket.getOutputStream())
             ) {
             sendStatusLine(controlBuffer);
             sendHeaders(controlBuffer);

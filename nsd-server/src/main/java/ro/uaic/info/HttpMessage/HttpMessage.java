@@ -717,4 +717,11 @@ public abstract class HttpMessage {
         if (status == 511) return "Network Authentication Require";
         return "";
     }
+
+    public static HttpMessageResponse JsonResponse(String body) {
+        return new HttpMessageResponseBuilder()
+                .status(200)
+                .header(HttpMessage.HEADER.CONTENT_TYPE, "text/json")
+                .body(body);
+    }
 }
