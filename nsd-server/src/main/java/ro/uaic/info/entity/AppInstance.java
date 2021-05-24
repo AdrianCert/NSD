@@ -7,6 +7,10 @@ import java.util.Date;
  */
 public class AppInstance {
     /**
+     * Instances Id
+     */
+    private Integer id;
+    /**
      * App Name
      */
     private String appName;
@@ -39,6 +43,14 @@ public class AppInstance {
      */
     private Boolean preferredIp;
 
+
+    /**
+     * Getter for id
+     * @return Integer with id value
+     */
+    public Integer getId() {
+        return id;
+    }
 
     /**
      * Getter for appName
@@ -102,6 +114,14 @@ public class AppInstance {
      */
     public Boolean getPreferredIp() {
         return preferredIp;
+    }
+
+    /**
+     * Setter for id
+     * @param id The id value
+     */
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**
