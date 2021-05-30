@@ -1,9 +1,11 @@
 package ro.uaic.info.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import ro.uaic.info.HttpMessage.HttpMessage;
 import ro.uaic.info.HttpMessage.HttpMessageNotFoundException;
 import ro.uaic.info.HttpMessage.HttpMessageRequest;
 import ro.uaic.info.HttpMessage.HttpMessageResponse;
+import ro.uaic.info.Service.AppInstanceService;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +22,16 @@ public class InstanceController implements DispatcherController {
     public static String mapRegex = "/instance(.*)";
 
     /**
+     * The Http request
+     */
+    private HttpMessageRequest request;
+
+    /**
+     * App instance services
+     */
+    private final AppInstanceService service = new AppInstanceService();
+
+    /**
      * Return a http response from inhered methods. Each method should resolve one path - method pair
      * That is assigned here and formatted after calling method
      * @param httpRequest The http request
@@ -32,19 +44,34 @@ public class InstanceController implements DispatcherController {
         String method = httpRequest.getMethod();
         Pattern pattern = Pattern.compile("/instance/(.*)");
         Matcher matcher = pattern.matcher(path);
-        if (matcher.matches() && method.equals(HttpMessage.METHOD.GET)) {
-            String appName = matcher.group(1);
-            return appName.isEmpty() ? getAppList() : getInstance(appName);
+        try {
+            if (matcher.matches() && method.equals(HttpMessage.METHOD.GET)) {
+                String appName = matcher.group(1);
+                return appName.isEmpty() ? getAppList() : getInstance(appName);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
 
         throw new HttpMessageNotFoundException();
     }
 
-    public HttpMessageResponse getAppList() {
-        return HttpMessage.JsonResponse("{ \"message\": \"Apps list\"}");
+    /**
+     * Return list of registered app
+     * @return JsonResponse with the list
+     * @throws JsonProcessingException Exception on processing
+     */
+    public HttpMessageResponse getAppList() throws JsonProcessingException {
+        return HttpMessage.JsonResponse(service.getAppsName());
     }
 
-    public HttpMessageResponse getInstance(String appName) {
-        return HttpMessage.JsonResponse("{ \"message\": \"App instance\"}");
+    /**
+     * Return an instance of an app
+     * @param appName app name
+     * @return JsonResponse with the app
+     * @throws JsonProcessingException Exception on json processing
+     */
+    public HttpMessageResponse getInstance(String appName) throws JsonProcessingException {
+        return HttpMessage.JsonResponse(service.get(appName));
     }
 }

@@ -89,6 +89,15 @@ public class AppInstanceService {
     }
 
     /**
+     * Get list of apps
+     * @return json with the list
+     * @throws JsonProcessingException Exception on json processing
+     */
+    public String getAppsName() throws JsonProcessingException {
+        return objectMapper.writeValueAsString(repository.getApps());
+    }
+
+    /**
      * Update an instance app
      * @param appId App id
      * @param appInfo App body info

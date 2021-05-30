@@ -130,10 +130,29 @@ public class AppInstanceRepository {
         }
         int current = roundBounder.get(appName);
         int counter = maxBounder.get(appName);
-        current = current == counter ? 0 : current + 1;
+        current = current + 1 == counter ? 0 : current + 1;
 
         roundBounder.put(appName, current);
-        return instancesName.get(appName).get(current);
+        int iter = current;
+        AppInstance appInstance;
+        while (true) {
+            appInstance = instancesName.get(appName).get(iter);
+            if(appInstance.getState().equals("UP")) {
+                return appInstance;
+            }
+            iter = iter + 1 == counter ? 0 : iter + 1;
+            if( iter == current) {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * Return instance app name list
+     * @return AppInstance
+     */
+    public List<String> getApps() {
+        return new LinkedList<>(instancesName.keySet());
     }
 
     /**
